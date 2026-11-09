@@ -5,7 +5,9 @@
 // (https://github.com/Taylor-Nilsen/goodnotes-codec, docs/FORMAT.md, MIT, (c) 2026 Taylor Nilsen) and checked
 // field by field against its real GoodNotes 6 export (tests/fixtures/gn-mac-mixed-pens.goodnotes).
 //   const doc=GoodNotesFile.create('Titel'), paper=doc.attach(pdfBytes);
-//   const page=doc.addPage(paper,widthPt,heightPt);page.stroke([x0,y0,x1,y1,…],widthPt,[r,g,b,a]);
+//   const page=doc.addPage(paper,widthPt,heightPt);
+//   page.curve([x0,y0, cx,cy,x,y, …],widthPt,[r,g,b,a]);   // pen stroke: start point, then quadratic Béziers
+//   page.stroke([x0,y0,x1,y1,…],widthPt,[r,g,b,a]);        // the same through straight pieces
 //   const bytes=await doc.save();   // Uint8Array (ZIP)
 // All coordinates are PDF points from the top-left corner; GoodNotes page units are 11/6 of a point.
 const GoodNotesFile = (() => {
@@ -45,8 +47,10 @@ const GoodNotesFile = (() => {
 
   // Ballpoint geometry: "tpl" template (version, width, command kinds, moves, quads, 1, no width samples),
   // stored as LZ4 literal-only blocks inside "bv41" chunks of at most 32 KiB.
-  function geometry(points,width){
-    const n=points.length/2,quads=Math.max(1,n-1),schema=enc.encode(PSTROKE+'\0');
+  // path = [x0,y0, cx,cy,x,y, …]: GoodNotes keeps a pen stroke as one start point and quadratic Béziers,
+  // so smooth curves arrive there exactly as they are, without being cut into straight pieces.
+  function geometry(path,width){
+    const quads=Math.max(1,(path.length-2)>>2),schema=enc.encode(PSTROKE+'\0');
     const size=8+schema.length+2+4+4+2*(quads+1)+4+8+4+16*quads+2+4,body=new Uint8Array(size),v=new DataView(body.buffer);
     // 1/32 unit is invisible but makes the numbers compress far better.
     const q=x=>Math.round(x*UNIT*32)/32;
@@ -54,13 +58,11 @@ const GoodNotesFile = (() => {
     body.set(enc.encode('tpl\0'));o=4;u32(size);body.set(schema,8);o=8+schema.length;
     u16(2);f32(Math.max(1,Math.round(width*UNIT*64))/64);
     u32(quads+1);u16(0);for(let i=0;i<quads;i++)u16(1);
-    u32(1);f32(q(points[0]));f32(q(points[1]));
+    u32(1);f32(q(path[0]));f32(q(path[1]));
     u32(quads);
-    for(let i=1;i<=quads;i++){
-      // A straight segment is a quad whose control point is the midpoint; a lone dot gets a tiny tail.
-      const j=Math.min(i,n-1)*2,x=n>1?points[j]:points[0]+.01,y=points[j+1],px=points[j-2]??points[0],py=points[j-1]??points[1];
-      f32(q((px+x)/2));f32(q((py+y)/2));f32(q(x));f32(q(y));
-    }
+    // A lone dot gets a tiny tail.
+    if(path.length<6){f32(q(path[0]+.005));f32(q(path[1]));f32(q(path[0]+.01));f32(q(path[1]));}
+    else for(let i=2;i<2+4*quads;i++)f32(q(path[i]));
     u16(1);u32(0);
     const parts=[];
     for(let i=0;i<size;i+=32768){
@@ -133,12 +135,18 @@ const GoodNotesFile = (() => {
         if(!pages.length)event(did,10,[S(1,did),S(2,pid),S(3,'PagingViewServiceUpdater:'+uuid()),...tail()]);
         notesEvents(nid,0);
         const page={nid,records,
-          /** Constant-width ballpoint stroke through flat [x,y,…] points (pt), round caps. */
-          stroke(points,widthPt,rgba=[0,0,0,1]){
-            if(points.length<2)return;
+          /** Constant-width ballpoint stroke along a curve [x0,y0, cx,cy,x,y, …] (pt), round caps. [x0,y0] alone is a dot. */
+          curve(path,widthPt,rgba=[0,0,0,1]){
+            if(path.length<2||path.some(v=>!Number.isFinite(v)))return;
             const sid=prefix+(sequence+1).toString(16).toUpperCase().padStart(12,'0'),st=stamp();
             records.push([S(1,sid),S(2,st),I(8,device),I(9,++sequence),I(14,DJB2_EMPTY),I(16,SCHEMA)],
-              [S(7,[S(1,sid),S(2,geometry(points,widthPt)),S(4,color(rgba)),S(6,''),S(7,[S(1,stamp())]),S(9,''),S(15,st),S(20,''),I(21,SCHEMA)])]);
+              [S(7,[S(1,sid),S(2,geometry(path,widthPt)),S(4,color(rgba)),S(6,''),S(7,[S(1,stamp())]),S(9,''),S(15,st),S(20,''),I(21,SCHEMA)])]);
+          },
+          /** The same through flat [x,y,…] points: every straight piece is a quad whose control point is its middle. */
+          stroke(points,widthPt,rgba=[0,0,0,1]){
+            const path=points.slice(0,2);
+            for(let i=2;i+1<points.length;i+=2)path.push((points[i-2]+points[i])/2,(points[i-1]+points[i+1])/2,points[i],points[i+1]);
+            page.curve(path,widthPt,rgba);
           }};
         pages.push(page);return page;
       },
