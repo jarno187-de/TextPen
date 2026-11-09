@@ -1,0 +1,22 @@
+TEXTPEN – WEB-VERSION MIT TEXTPEN CONTROL
+
+Hier liegt die aktuelle Website. Zum lokalen Öffnen index.html doppelt anklicken.
+
+Die öffentliche Anwendung liegt weiterhin in diesem Ordner.
+Für den Betrieb MIT Admin-Steuerung über Cloudflare die Anleitung ../control/README.md verwenden.
+Ein bloßes Hochladen dieser Dateien aktiviert keine serverseitigen IP-Sperren oder Verwaltung.
+ANLEITUNG.txt und *.test.cjs nicht mit hochladen.
+Den Ordner assets vollständig mitnehmen; er enthält die Beispielbilder.
+Die öffentlichen Zusatzdateien anleitung.html, public.css, robots.txt und sitemap.xml müssen ebenfalls mit hochgeladen werden.
+Für die Admin-Version sind ein Build und Cloudflare Workers erforderlich; kein eigener dauerhaft laufender PC-Server.
+Nach dem Hochladen braucht die Website deinen PC nicht mehr.
+Lokale Änderungen aktualisieren textpen.de noch nicht.
+Zugangsdaten und Authenticator-Dateien liegen außerhalb dieses Ordners und dürfen niemals als Website-Dateien hochgeladen werden.
+
+BEI KÜNFTIGEN ÄNDERUNGEN
+Immer diesen Ordner direkt aktualisieren. Keine zusätzlichen Versionsordner,
+ZIP-Kopien oder Vorschaubilder im Projekt ablegen.
+Old.zip im übergeordneten Ordner unverändert behalten.
+
+Der frühere Goodnotes-Code bleibt im bereits vorhandenen Backup erhalten:
+C:/Users/jeter/Documents/Codex/2026-10-12/mach-das-f-r-mich-dieses/BACKUP/TextPen-1.4-Windows-Backup.zip

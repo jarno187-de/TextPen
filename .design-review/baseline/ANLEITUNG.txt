@@ -1,0 +1,18 @@
+TEXTPEN – AKTUELLE WEB-VERSION 1.4
+
+Hier liegt die aktuelle Website. Zum lokalen Öffnen index.html doppelt anklicken.
+
+Für die Veröffentlichung den Inhalt dieses Ordners auf das Webhosting hochladen.
+index.html muss dort direkt im Hauptverzeichnis liegen.
+ANLEITUNG.txt muss nicht mit hochgeladen werden.
+Kein Build und kein Python-Server erforderlich.
+Nach dem Hochladen braucht die Website deinen PC nicht mehr.
+Lokale Änderungen aktualisieren textpen.de noch nicht.
+
+BEI KÜNFTIGEN ÄNDERUNGEN
+Immer diesen Ordner direkt aktualisieren. Keine zusätzlichen Versionsordner,
+ZIP-Kopien oder Vorschaubilder im Projekt ablegen.
+Old.zip im übergeordneten Ordner unverändert behalten.
+
+Der frühere Goodnotes-Code bleibt im bereits vorhandenen Backup erhalten:
+C:/Users/jeter/Documents/Codex/2026-10-12/mach-das-f-r-mich-dieses/BACKUP/TextPen-1.4-Windows-Backup.zip

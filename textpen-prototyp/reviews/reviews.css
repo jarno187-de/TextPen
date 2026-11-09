@@ -1,0 +1,45 @@
+/* Reviews dialog and prompt. Builds on .privacy-dialog and the TextPen colour tokens (forest.css). */
+.reviews-dialog{max-width:640px}
+.reviews-summary{display:grid;grid-template-columns:auto 1fr;gap:12px 24px;align-items:center;margin:0 0 20px}
+.reviews-summary>p{grid-column:1/-1;margin:0;color:var(--muted)}
+.reviews-score{display:grid;justify-items:center;gap:2px}
+.reviews-score strong{font-size:40px;line-height:1;color:var(--text)}
+.reviews-score small{color:var(--muted)}
+.reviews-stars{color:var(--accent);letter-spacing:1px;white-space:nowrap}
+.reviews-bars{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:12px;color:var(--muted)}
+.reviews-bar{height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
+.reviews-bar i{display:block;height:100%;background:var(--accent)}
+.reviews-form{display:grid;gap:12px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.reviews-form h3{margin:0;font-size:17px}
+.reviews-form label{display:grid;gap:4px;font-size:14px}
+.reviews-form input:not([type=radio]),.reviews-form textarea{font:inherit;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:44px;box-sizing:border-box;width:100%}
+.reviews-form textarea{resize:vertical;min-height:96px;height:auto;margin:0;line-height:1.5;font-size:14px}
+.reviews-form input:not([type=radio]):focus-visible,.reviews-form textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.reviews-counter{justify-self:end;color:var(--muted)}
+.reviews-rating{border:0;margin:0;padding:0}
+.reviews-rating legend{font-size:14px;margin-bottom:4px}
+.reviews-choices{display:inline-flex;flex-direction:row-reverse;gap:2px}
+.reviews-choices input{position:absolute;opacity:0;width:1px;height:1px}
+.reviews-choices label{display:grid;place-items:center;width:44px;height:44px;font-size:30px;line-height:1;cursor:pointer;color:var(--muted);opacity:.45;border-radius:8px}
+.reviews-choices input:checked~label,.reviews-choices label:hover,.reviews-choices label:hover~label{opacity:1}
+.reviews-choices input:checked~label,.reviews-choices label:hover,.reviews-choices label:hover~label{color:var(--accent)}
+.reviews-choices input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+.reviews-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.reviews-actions{display:flex;flex-wrap:wrap;gap:8px}
+.reviews-status{margin:0;min-height:1.4em;font-size:14px}
+.reviews-note{font-size:13px;color:var(--muted)}
+.reviews-note summary{cursor:pointer;min-height:24px}
+.reviews-list{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+.reviews-list li{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:4px}
+.reviews-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.reviews-text{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.reviews-list small{color:var(--muted)}
+.reviews-reply{margin:6px 0 0 12px;padding:8px 12px;background:var(--soft);border-radius:8px;font-size:14px}
+.reviews-reply strong{color:var(--accent)}
+.reviews-reply p{margin:4px 0 0}
+.reviews-more{margin-top:12px}
+.reviews-prompt{position:fixed;z-index:20;right:16px;bottom:16px;max-width:calc(100vw - 32px);display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+.reviews-prompt p{margin:0;font-weight:600}
+.reviews-prompt-stars button{min-width:40px;min-height:40px;font-size:24px;color:var(--accent);background:none;border:0;cursor:pointer}
+@media (max-width:480px){.reviews-summary{grid-template-columns:1fr}.reviews-prompt{left:16px;right:16px}}
+@media (prefers-reduced-motion:no-preference){.reviews-choices label{transition:color .12s}}

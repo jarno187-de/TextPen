@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Font-Striche prüfen</title>
+<style>body{font:14px system-ui;margin:16px;background:#fff;color:#111}canvas{border:1px solid #ddd;max-width:100%}</style>
+<h1>Eingebaute Schrift: Umriss (grau) und GoodNotes-Striche (farbig)</h1>
+<p>Jede Farbe ist ein eigener radierbarer Strich. Text ändern: <input id="text" value="aäbcdefghijklmnoöpqrsßtuüvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 .,;:!?„“'()-+=/&@€%" size="80"></p>
+<canvas id="c" width="1400" height="900"></canvas>
+<script src="/assets/handwriting-vectors.js"></script>
+<script src="/prototyp/goodnotes/font-strokes.js"></script>
+<script>
+const c=document.getElementById('c'),g=c.getContext('2d');
+function draw(){
+  const text=[...document.getElementById('text').value],size=+new URLSearchParams(location.search).get('size')||64,k=size/1000;g.clearRect(0,0,c.width,c.height);
+  let x=10,y=80,n=0;
+  for(const ch of text){
+    const adv=ch===' '?size*.35:size*.62;if(x+adv>c.width-10){x=10;y+=size*1.4;}
+    if(ch!==' '){
+      const path=new Path2D();const p=HandwritingVectors.paths[HandwritingVectors.chars[ch]??0];let nums=[];
+      for(const t of p.split(/\s+/).filter(Boolean)){if(!/^[mlch]$/.test(t)){nums.push(+t);continue;}const P=(i)=>[x+nums[i]*k,y-nums[i+1]*k];
+        if(t==='m')path.moveTo(...P(0));else if(t==='l')path.lineTo(...P(0));else if(t==='c')path.bezierCurveTo(...P(0),...P(2),...P(4));else path.closePath();nums=[];}
+      g.fillStyle='#d6d6d6';g.fill(path);
+      for(const [w,...uv] of FontStrokes.paths[FontStrokes.chars[ch]??0]){
+        g.strokeStyle=`hsla(${(n++*67)%360},75%,40%,.75)`;g.lineWidth=w*k;g.lineCap=g.lineJoin='round';g.beginPath();
+        for(let i=0;i<uv.length;i+=2){const px=x+uv[i]*k,py=y-uv[i+1]*k;i?g.lineTo(px,py):g.moveTo(px,py);}
+        if(uv.length===2)g.lineTo(x+uv[0]*k+.01,y-uv[1]*k);g.stroke();
+      }
+    }
+    x+=adv;
+  }
+}
+document.getElementById('text').oninput=draw;draw();
+</script>
+</html>

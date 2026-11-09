@@ -1,0 +1,19 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "textpen-control",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": false },
+  "routes": [
+    { "pattern": "textpen.de", "custom_domain": true }
+  ],
+  "vars": { "PUBLIC_HOST": "textpen.de", "ADMIN_HOST": "textpen.de", "SITE_SCRIPT": "textpen-content" },
+  "durable_objects": { "bindings": [{ "name": "CONTROL", "class_name": "ControlStore" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ControlStore"] }],
+  "services": [{ "binding": "SITE", "service": "textpen-content" }],
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "rules": [{ "type": "Text", "globs": ["**/*.html", "**/*.css", "**/*.client.js"], "fallthrough": true }]
+}

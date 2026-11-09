@@ -1,0 +1,200 @@
+/* Screen-only product styling. The original shared styles, root variables and
+   legal pages stay untouched. While privacy is open, this layer is inactive,
+   including the workspace behind its translucent backdrop. */
+@media screen {
+  html:not(:has(#privacy-dialog[open])) {
+    #textpen-app {
+      --ui-bg: #efe8da;
+      --ui-surface: #faf7f0;
+      --ui-soft: #e3e7da;
+      --ui-text: #0f2a22;
+      --ui-muted: #526456;
+      --ui-line: #c5cebd;
+      --ui-accent: #1f4536;
+      --ui-hover: #1f4536;
+      background: var(--ui-bg);
+      min-height: 100vh;
+    }
+    &[data-theme=dark] #textpen-app {
+      --ui-bg: #0f2a22;
+      --ui-surface: #17382c;
+      --ui-soft: #244737;
+      --ui-text: #efe8da;
+      --ui-muted: #b6c3ab;
+      --ui-line: #49614e;
+      --ui-accent: #c3d0b3;
+      --ui-hover: #c3d0b3;
+    }
+    /* Variables are local to editable surfaces; they cannot reach the footer,
+       consent dialog, closed state, or standalone legal documents. */
+    :is(#write-view, #font-view, #help-dialog, #toast) {
+      --card: var(--ui-surface);
+      --soft: var(--ui-soft);
+      --field: var(--ui-surface);
+      --text: var(--ui-text);
+      --muted: var(--ui-muted);
+      --line: var(--ui-line);
+      --accent: var(--ui-accent);
+      color: var(--ui-text);
+    }
+    #textpen-app > header { border-color: var(--ui-line); background: var(--ui-surface); }
+    #textpen-app > header .privacy { color: var(--ui-muted); letter-spacing: .5px; }
+    #textpen-app > header .privacy i { background: var(--ui-accent); }
+    #textpen-app > header > .quiet {
+      background: transparent; color: var(--ui-text); border-color: var(--ui-line);
+      border-radius: 4px; padding: 10px 14px; font-size: 13px;
+    }
+    #textpen-app > header > .quiet:hover { background: var(--ui-soft); border-color: var(--ui-accent); }
+    #textpen-app > header > .quiet:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 3px; }
+    #textpen-app .compact-intro { padding: 30px 0 26px; }
+    #textpen-app .compact-intro .eyebrow { color: var(--ui-muted); font-size: 10px; letter-spacing: 1px; font-weight: 500; }
+    #textpen-app .compact-intro h1 { color: var(--ui-text); font: 36px/1.2 Georgia, 'Times New Roman', serif; letter-spacing: -.8px; margin: 8px 0 10px; }
+    #textpen-app .compact-intro h1 em { color: var(--ui-accent); font-weight: 400; font-style: italic; }
+    #textpen-app .compact-intro p { color: var(--ui-muted); font-size: 14px; }
+    #textpen-app .tabs { border-color: var(--ui-line); gap: 28px; margin-bottom: 22px; }
+    #textpen-app .tab { color: var(--ui-muted); padding: 10px 0 13px; font-size: 14px; }
+    #textpen-app .tab.active { color: var(--ui-accent); border-color: var(--ui-accent); }
+    #textpen-app .tab:hover { color: var(--ui-text); }
+    #textpen-app .tab:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 3px; }
+    #textpen-app .tab small { background: transparent; color: var(--ui-muted); border-left: 1px solid var(--ui-line); border-radius: 0; font-size: 11px; }
+    #textpen-app .tabs .optional-label { font-size: 11px; opacity: 1; }
+    #write-view { gap: 28px; }
+    #write-view .panel, #font-view { border-radius: 6px; box-shadow: none; }
+    #write-view .panel-heading { padding: 22px 22px 16px; }
+    #write-view :is(.panel-heading, .setting-heading, .preview-toolbar) h2 { font-size: 16px; font-weight: 600; }
+    #write-view .step-number { background: transparent; color: var(--muted); border-radius: 0; width: 18px; font: 17px Georgia, serif; }
+    #write-view .panel-heading .text-button { font-size: 12px; }
+    #write-view #letter { height: 190px; font-size: 14px; line-height: 1.75; border-radius: 4px; padding: 12px 14px; }
+    #write-view #letter::placeholder { color: var(--muted); opacity: 1; }
+    #write-view .text-footer { font-size: 11px; margin-top: 10px; margin-bottom: 20px; }
+    #write-view .settings { padding-top: 22px; }
+    #write-view .setting-heading { margin-bottom: 20px; }
+    #write-view .settings label { font-size: 12px; font-weight: 500; }
+    #write-view .settings h3 { font-size: 14px; font-weight: 600; }
+    #write-view :is(.hint, .section-description) { font-size: 12px; line-height: 1.65; }
+    #write-view .control-pair { gap: 20px; }
+    #write-view .control-pair .range-row { flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+    #write-view .range-row output { border: 0; background: transparent; padding: 0; min-width: 0; font-size: 12px; font-weight: 600; }
+    #write-view input[type=range] { height: 4px; margin: 17px 0 22px; }
+    #write-view input[type=range]::-webkit-slider-thumb { width: 19px; height: 19px; border: 2px solid var(--card); box-shadow: 0 0 0 1px var(--accent); }
+    #write-view input[type=range]::-moz-range-thumb { width: 15px; height: 15px; border: 2px solid var(--card); box-shadow: 0 0 0 1px var(--accent); }
+    #write-view :is(.spacing-settings, .paper-section) { padding-top: 22px; margin-top: 18px; }
+    #write-view .advanced { padding-top: 14px; margin-top: 18px; }
+    #write-view .advanced summary { font-size: 13px; padding: 9px 0; }
+    #write-view .color-panel { border-radius: 4px; }
+    :is(#write-view, #font-view) select,
+    #write-view input:not([type=range]) { border-radius: 4px; font-size: 13px; min-height: 42px; }
+    :is(#write-view, #font-view, #help-dialog) :is(.primary, .secondary, .quiet) {
+      min-height: 42px; border-radius: 4px; padding: 10px 14px; font-size: 13px;
+      font-weight: 600; line-height: 1.5;
+    }
+    :is(#write-view, #font-view, #help-dialog) .primary { background: var(--accent); border-color: var(--accent); color: var(--card); }
+    :is(#write-view, #font-view, #help-dialog) .primary:hover { background: var(--ui-hover); border-color: var(--ui-hover); filter: brightness(1.1); }
+    :is(#write-view, #font-view, #help-dialog) :is(.secondary, .quiet) { background: transparent; color: var(--text); }
+    :is(#write-view, #font-view, #help-dialog) :is(.secondary, .quiet):hover { background: var(--soft); }
+    :is(#write-view, #font-view, #help-dialog) button:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+    :is(#write-view, #font-view, #help-dialog) :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    :is(#write-view, #font-view, #help-dialog) :is(.text-button, .inline-button):hover { text-decoration: underline; text-underline-offset: 3px; }
+    #write-view .swatch { width: 30px; height: 30px; }
+    #write-view .swatches .rainbow { background: var(--card); color: var(--text); text-shadow: none; font-size: 20px; font-weight: 400; outline: 1px solid var(--line); }
+    #write-view .swatches .rainbow.selected { outline: 2px solid var(--accent); }
+    #write-view .preview-area { border-radius: 6px; padding: 20px; background: var(--soft); }
+    #write-view .preview-toolbar { margin-bottom: 20px; }
+    #write-view .preview-toolbar > span { font-size: 11px; }
+    /* Canvas dimensions, page styles, paper and drawing coordinates are left alone. */
+    #write-view .preview-empty { top: 64px; border-radius: 5px; box-shadow: 0 4px 18px #0f2a220a; background: var(--card); border-color: var(--line); color: var(--text); padding: 24px; }
+    #write-view .empty-mark { color: var(--accent); }
+    #write-view .preview-empty p { color: var(--muted); font-size: 13px; }
+    #write-view .preview-empty button { border-color: var(--line); }
+    #write-view .export-explanation { font-size: 12px; margin-top: 14px; }
+    #write-view .preview-export { gap: 10px; margin-top: 10px; }
+    #write-view .preview-export button { flex: 0 1 auto; }
+    #write-view #print { margin-left: auto; }
+    #font-view { padding: 28px; }
+    #font-view .font-intro .eyebrow { color: var(--muted); letter-spacing: 1px; font-weight: 500; }
+    #font-view .font-intro h2 { font: 28px/1.3 Georgia, serif; letter-spacing: -.4px; }
+    #font-view :is(.font-intro p, .hint, .font-steps) { font-size: 13px; line-height: 1.65; }
+    #font-view .training-options > summary { font-size: 14px; padding: 14px 0; }
+    #font-view .training-settings { border-radius: 4px; }
+    #font-view .glyph-tabs { border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+    #font-view .glyph-tabs button { min-height: 40px; border-radius: 4px; }
+    #font-view .glyph-tabs button.active { color: var(--card); }
+    #font-view .glyph-grid button { border-radius: 4px; font-weight: 500; }
+    #font-view .glyph-grid button.saved { background: var(--lime); border-color: var(--lime); color: #0f2a22; }
+    #font-view .glyph-grid button.partial { background: var(--soft); border-style: dashed; }
+    #font-view .glyph-grid button:hover { border-color: var(--accent); }
+    #font-view .glyph-grid button small { font-size: 10px; }
+    #font-view .drawing-wrap { border-radius: 4px; }
+    #font-view .drawing-heading h3 { font-size: 14px; }
+    #font-view #variants { font-size: 12px; letter-spacing: 0; }
+    #font-view .variant { border-radius: 3px; }
+    #font-view .variant button { min-width: 32px; min-height: 36px; font-size: 20px; }
+    #font-view #use-font { margin-top: 24px; }
+    #help-dialog { width: min(760px, calc(100% - 32px)); max-width: 760px; max-height: calc(100dvh - 40px); border-radius: 6px; padding: 34px 40px; box-shadow: 0 24px 80px #0003; }
+    #help-dialog::backdrop { background: #081c16bd; backdrop-filter: none; }
+    #help-dialog .eyebrow { color: var(--muted); font-weight: 500; letter-spacing: 1px; }
+    #help-dialog h2 { font: 30px/1.25 Georgia, serif; letter-spacing: -.4px; }
+    #help-dialog .close { color: var(--text); width: 40px; height: 40px; border-radius: 4px; position: sticky; float: right; top: 0; margin: -18px -24px 0 0; background: var(--card); z-index: 1; }
+    #help-dialog .help-lead { font-size: 14px; line-height: 1.75; }
+    #help-dialog :is(p, li, .control-guide > div) { font-size: 13px; line-height: 1.75; }
+    #help-dialog .help-steps { margin: 26px 0; }
+    #help-dialog .help-steps > li::before { background: transparent; color: var(--accent); border: 1px solid var(--line); border-radius: 50%; font-family: Georgia, serif; }
+    #help-dialog .help-section { padding: 0; }
+    #help-dialog .help-section summary { font-size: 14px; padding: 17px 0; }
+    #help-dialog .help-section > :not(summary) { margin-top: 0; margin-bottom: 18px; }
+    #help-dialog .control-guide > div { grid-template-columns: 160px 1fr; padding: 12px 0; }
+    #help-dialog #help-start { margin-top: 24px; }
+    #toast { border-radius: 4px; background: var(--text); color: var(--card); box-shadow: 0 4px 20px #0002; }
+    @media (max-width: 1100px) and (min-width: 761px) {
+      #write-view { grid-template-columns: minmax(310px, .95fr) minmax(0, 1fr); gap: 20px; }
+      #write-view .preview-export button { flex-basis: 100%; }
+      #write-view #print { margin-left: 0; }
+    }
+    @media (max-width: 760px) {
+      #textpen-app > header { gap: 10px; }
+      #textpen-app > header > .quiet { font-size: 12px; padding: 9px 11px; }
+      #textpen-app .compact-intro { padding: 26px 0 20px; }
+      #textpen-app .compact-intro h1 { font-size: 30px; }
+      #textpen-app .compact-intro p { font-size: 13px; }
+      #textpen-app .tabs { gap: 24px; }
+      #textpen-app .tab { font-size: 13px; }
+      #write-view { gap: 22px; }
+      #write-view .preview-export button { flex: 1 1 45%; }
+      #write-view #print { margin-left: 0; }
+      #font-view { padding: 20px; }
+      #font-view .font-intro h2 { font-size: 25px; }
+      #font-view .glyph-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      #font-view .font-actions { gap: 8px; }
+      #font-view .draw-actions { gap: 8px; }
+      #font-view .draw-actions .primary { flex-basis: 100%; margin-left: 0; }
+      #help-dialog { padding: 26px 22px; }
+      #help-dialog h2 { font-size: 26px; }
+      #help-dialog .close { margin-right: -12px; }
+      #help-dialog .control-guide > div { grid-template-columns: 1fr; gap: 4px; }
+    }
+    @media (max-width: 420px) {
+      #textpen-app > header .brand { flex-basis: 100%; }
+      #textpen-app > header > .quiet { flex: 1; }
+      #write-view .control-pair .range-row { min-height: 45px; }
+      #write-view .preview-toolbar { flex-wrap: wrap; }
+      #write-view .preview-toolbar > span { max-width: 100%; }
+      #write-view .preview-empty { top: 28px; padding: 18px 12px; }
+      #write-view .preview-empty h3 { font-size: 15px; }
+      #write-view .preview-empty button { font-size: 12px; }
+    }
+  }
+}
+
+/* Keep the extended keyboard catalogue usable beside the drawing pad. */
+#font-view .glyph-tabs { flex-wrap: wrap; gap: 6px; }
+#font-view .glyph-grid { max-height: 420px; overflow-y: auto; align-content: start; padding: 3px; }
+#font-view .glyph-grid button { min-width: 0; overflow: hidden; }
+.extra-characters { margin-top: 16px; }
+.extra-characters label { display: block; margin-bottom: 6px; }
+.extra-characters > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.extra-characters input { flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--field); color: var(--text); }
+
+/* Cleanup actions wrap on narrow screens and remain usable with touch. */
+.draw-actions,.font-actions{flex-wrap:wrap}
+.cleanup-undo{margin:0 0 8px}
+.cleanup-hint{line-height:1.5}

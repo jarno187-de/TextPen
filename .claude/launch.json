@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "textpen-static",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "textpen-web"],
+      "port": 8765
+    },
+    {
+      "name": "textpen-prototyp",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["textpen-prototyp/dev/serve.mjs"],
+      "port": 8780
+    }
+  ]
+}

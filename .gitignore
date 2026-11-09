@@ -1,0 +1,7 @@
+node_modules/
+.build/
+.wrangler/
+.dev.vars*
+.env*
+*.secret.json
+control/test/results/

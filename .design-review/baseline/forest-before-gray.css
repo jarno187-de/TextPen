@@ -1,0 +1,41 @@
+/* Shared Forest & Cream palette. Screen UI only; document output keeps its colors. */
+@media screen {
+  :root {
+    color-scheme: light;
+    --bg: #efe8da; --card: #faf7f0; --panel: #faf7f0; --soft: #e3e7da;
+    --text: #0f2a22; --muted: #526456; --line: #c5cebd;
+    --accent: #1f4536; --lime: #8a9a7b; --field: #fffdf7;
+    --on-accent: #faf7f0; --shadow: 0 14px 35px #0f2a220c;
+  }
+  :root[data-theme=dark] {
+    color-scheme: dark;
+    --bg: #0f2a22; --card: #17382c; --panel: #17382c; --soft: #244737;
+    --text: #efe8da; --muted: #b6c3ab; --line: #49614e;
+    --accent: #c3d0b3; --lime: #8a9a7b; --field: #112f25;
+    --on-accent: #0f2a22; --shadow: 0 14px 35px #0003;
+  }
+  /* Override the editor's local palette, including when a consent dialog is open. */
+  html #textpen-app, html[data-theme=dark] #textpen-app {
+    --ui-bg: var(--bg); --ui-surface: var(--card); --ui-soft: var(--soft);
+    --ui-text: var(--text); --ui-muted: var(--muted); --ui-line: var(--line);
+    --ui-accent: var(--accent); --ui-hover: var(--accent);
+    background: var(--bg);
+  }
+  body > header, .site-nav { background: var(--card); }
+  .brand-icon { color: var(--on-accent); }
+  .primary, :root[data-theme=dark] .primary,
+  #write-view .primary, #font-view .primary, #help-dialog .primary,
+  #font-view .glyph-tabs button.active { color: var(--on-accent); }
+  #font-view .glyph-grid button.saved { color: #0f2a22; }
+  .legal-page h1, .legal-page h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+  .preview-empty { background: var(--card); color: var(--text); border-color: var(--line); }
+  .preview-empty p { color: var(--muted); }
+  .empty-mark { color: var(--accent); }
+  .preview-empty button { background: var(--soft); color: var(--accent); border-color: var(--line); }
+  dialog::backdrop, #help-dialog::backdrop { background: #081c16bd; }
+  .site-notice, .site-notice[data-tone=success] { background: var(--soft); color: var(--text); border-color: var(--line); }
+  .site-notice[data-tone=warning] { background: #f2e5c9; color: #58441f; }
+  :root[data-theme=dark] .site-notice[data-tone=warning] { background: #413b25; color: #f2e5c9; }
+  ::selection { background: #8a9a7b; color: #0f2a22; }
+}
+@media screen{.privacy-dialog::backdrop{background:#081c16bd}}

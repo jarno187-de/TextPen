@@ -1,0 +1,130 @@
+/* Cream light theme and neutral dark theme with green accents. Screen UI only. */
+@media screen {
+  :root {
+    color-scheme: light;
+    --bg: #efe8da; --card: #faf7f0; --panel: #faf7f0; --soft: #e3e7da;
+    --text: #0f2a22; --muted: #526456; --line: #c5cebd;
+    --accent: #1f4536; --lime: #8a9a7b; --field: #fffdf7;
+    --on-accent: #faf7f0; --shadow: 0 14px 35px #0f2a220c;
+  }
+  :root[data-theme=dark] {
+    color-scheme: dark;
+    --bg: #181818; --card: #222222; --panel: #222222; --soft: #2c2c2c;
+    --text: #eeeeee; --muted: #b2b2b2; --line: #444444;
+    --accent: #9bd4a9; --lime: #9bd4a9; --field: #1c1c1c;
+    --on-accent: #18251c; --shadow: 0 14px 35px #0003;
+  }
+  /* Override the editor's local palette, including when a consent dialog is open. */
+  html #textpen-app, html[data-theme=dark] #textpen-app {
+    --ui-bg: var(--bg); --ui-surface: var(--card); --ui-soft: var(--soft);
+    --ui-text: var(--text); --ui-muted: var(--muted); --ui-line: var(--line);
+    --ui-accent: var(--accent); --ui-hover: var(--accent);
+    background: var(--bg);
+  }
+  body > header, .site-nav { background: var(--card); }
+  .brand-icon { color: var(--on-accent); }
+  .primary, :root[data-theme=dark] .primary,
+  #write-view .primary, #font-view .primary, #help-dialog .primary,
+  #font-view .glyph-tabs button.active { color: var(--on-accent); }
+  #font-view .glyph-grid button.saved { color: #0f2a22; }
+  .legal-page h1, .legal-page h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+  .preview-empty { background: var(--card); color: var(--text); border-color: var(--line); }
+  .preview-empty p { color: var(--muted); }
+  .empty-mark { color: var(--accent); }
+  .preview-empty button { background: var(--soft); color: var(--accent); border-color: var(--line); }
+  dialog::backdrop, #help-dialog::backdrop { background: #081c16bd; }
+  .site-notice, .site-notice[data-tone=success] { background: var(--soft); color: var(--text); border-color: var(--line); }
+  .site-notice[data-tone=warning] { background: #f2e5c9; color: #58441f; }
+  :root[data-theme=dark] .site-notice[data-tone=warning] { background: #413b25; color: #f2e5c9; }
+  ::selection { background: #8a9a7b; color: #0f2a22; }
+  html[data-theme=dark] :is(dialog, #help-dialog, .privacy-dialog)::backdrop { background: #000000bd; }
+  :root[data-theme=dark] #font-view .glyph-grid button.saved {
+    background: var(--soft); color: var(--accent); border-color: var(--accent);
+  }
+  :root[data-theme=dark] ::selection { background: var(--accent); color: var(--on-accent); }
+}
+@media screen{.privacy-dialog::backdrop{background:#081c16bd}}
+/* Icon-only settings button in the header corner; matches the workspace layer's selector weight. */
+@media screen {
+  #textpen-app > header > #settings-button, html:not(:has(#privacy-dialog[open])) #textpen-app > header > #settings-button { flex: 0 0 40px; margin-left: auto; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: grid; place-items: center; font-size: 18px; line-height: 1; }
+}
+/* Onboarding: dimmed page with one highlighted area and a card that cannot be dismissed. */
+@media screen {
+  .onboarding { position: fixed; inset: 0; z-index: 1000; }
+  .onboarding-spot { position: fixed; border-radius: 8px; outline: 2px solid var(--accent); box-shadow: 0 0 0 200vmax #081c16bd; pointer-events: none; transition: left .2s, top .2s, width .2s, height .2s; }
+  :root[data-theme=dark] .onboarding-spot { box-shadow: 0 0 0 200vmax #000000bd; }
+  .onboarding-card { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(420px, calc(100% - 32px)); background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 18px 20px; }
+  .onboarding-count { font-size: 11px; font-weight: 700; color: var(--accent); }
+  .onboarding-card h2 { font-size: 17px; margin: 6px 0 6px; }
+  .onboarding-card p { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 0 0 14px; }
+  .onboarding-actions { display: flex; gap: 10px; }
+  .onboarding-actions [data-next] { margin-left: auto; }
+  .onboarding-actions [hidden] { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .onboarding-spot { transition: none; } }
+@media print { .onboarding { display: none !important; } }
+/* The variant slider sits on a soft panel, so its empty track uses the card colour. */
+@media screen {
+  .training-settings input[type=range] { background: linear-gradient(to right, var(--accent) 0 var(--fill, 0%), var(--card) var(--fill, 0%) 100%); }
+}
+@media screen {
+  #settings-button svg, .theme-option svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+}
+/* Settings dialog: topics on the left, the chosen topic's settings on the right; topics become a row on phones. */
+@media screen {
+  .settings-dialog { width: min(760px, calc(100vw - 32px)); max-width: 760px; }
+  .settings-layout { display: grid; grid-template-columns: 176px minmax(0, 1fr); gap: 28px; align-items: start; }
+  .settings-nav { display: grid; gap: 2px; }
+  .settings-nav [role=tab] { min-height: 40px; padding: 8px 12px; text-align: left; background: none; border: 0; border-radius: 8px; font: inherit; font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer; }
+  .settings-nav [role=tab]:hover { background: var(--soft); color: var(--text); }
+  .settings-nav [aria-selected=true] { background: var(--soft); color: var(--text); font-weight: 650; }
+  .settings-nav [role=tab]:focus-visible, .settings-panels [role=tabpanel]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .settings-panels { min-height: 360px; }
+  .settings-panels h3 { margin: 4px 0 4px; font-size: 18px; line-height: 1.3; }
+  .settings-dialog .settings-lead { margin: 0 0 18px; font-size: 14px; color: var(--muted); }
+  .setting-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .setting-row label { cursor: pointer; }
+  .setting-row strong { display: block; font-size: 14px; }
+  .setting-row small { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .settings-dialog .setting-row button, .beta-confirm button { min-height: 40px; margin: 0; padding: 8px 14px; font-size: 13px; }
+  .setting-link { color: var(--accent); font-size: 14px; font-weight: 600; text-underline-offset: 3px; white-space: nowrap; }
+  .settings-switch { appearance: none; position: relative; flex: none; width: 44px; height: 26px; margin: 0; border-radius: 13px; background: var(--line); cursor: pointer; transition: background-color .15s ease-out; }
+  .settings-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--card); box-shadow: 0 1px 2px #0003; transition: transform .15s ease-out; }
+  .settings-switch:checked { background: var(--accent); }
+  .settings-switch:checked::after { transform: translateX(18px); }
+  .settings-switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .beta-warning { margin-top: 6px; padding: 14px 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 12px; }
+  .settings-dialog .beta-warning p, .beta-warning li { margin: 0 0 8px; font-size: 13px; line-height: 1.6; }
+  .beta-warning ul { margin: 0; padding-left: 18px; }
+  .settings-dialog .beta-warning .beta-warning-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+  .beta-warning-title svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .beta-confirm { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+  /* runExport() resets the button text, so the badge lives in CSS. */
+  #goodnotes::after { content: "Beta"; display: inline-block; margin-left: 8px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; vertical-align: 1px; }
+  .theme-options { border: 0; padding: 0; margin: 0 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .theme-option { position: relative; display: grid; justify-items: center; align-content: start; gap: 8px; padding: 16px 10px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; text-align: center; }
+  .theme-option input { position: absolute; opacity: 0; pointer-events: none; }
+  .theme-option svg { width: 22px; height: 22px; }
+  .theme-option small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: var(--muted); }
+  .theme-option:has(input:checked) { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .theme-option:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .settings-dialog .hint { font-size: 13px; color: var(--muted); margin: 0; }
+  .settings-dialog .inline-button { font: inherit; padding: 0; border: 0; background: none; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+}
+@media screen and (max-width: 640px) {
+  .settings-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .settings-nav { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+  .settings-nav [role=tab] { flex: none; white-space: nowrap; }
+  .settings-panels { min-height: 0; }
+}
+@media screen and (max-width: 420px) {
+  .theme-options { grid-template-columns: 1fr; }
+  .theme-option { grid-template-columns: auto 1fr; justify-items: start; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-switch, .settings-switch::after { transition: none; }
+}
+/* Phones: logo and settings button stay on one row; the button stays a 40px circle. */
+@media screen and (max-width: 420px) {
+  #textpen-app > header .brand, html:not(:has(#privacy-dialog[open])) #textpen-app > header .brand { flex-basis: auto; }
+}

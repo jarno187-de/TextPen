@@ -1,0 +1,13 @@
+[
+  "Direct start; no modal and no storage access",
+  "Multiple pages, PDF and PNG downloads with simulated cosmetic blocker",
+  "Public content excluded from print",
+  "Own glyph save, font export and reimport",
+  "Opt-in, revocation, deletion and continuing work",
+  "Stored project only read after renewed consent; empty work restored",
+  "Conflict: cancel, keep current and restore saved explicitly",
+  "Storage blocked: startup and editor still usable, error shown",
+  "320/390/820/1440 px, both themes: no horizontal overflow",
+  "Four public pages readable without JavaScript; links and assets resolve",
+  "No page errors or external advertising/tracking requests"
+]

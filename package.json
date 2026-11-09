@@ -1,0 +1,29 @@
+{
+  "name": "textpen-control",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node control/scripts/build.mjs",
+    "test": "node --test control/test/unit.test.mjs control/test/reviews.test.mjs control/test/goodnotes.test.mjs",
+    "test:integration": "node control/test/integration.mjs",
+    "test:browser": "node control/test/browser.mjs",
+    "test:live": "node control/test/live.mjs",
+    "test:maintenance": "node control/test/maintenance.mjs",
+    "setup": "node control/scripts/setup.mjs",
+    "confirm-authenticator": "node control/scripts/confirm-authenticator.mjs",
+    "deploy": "node control/scripts/deploy.mjs",
+    "dev": "npm run build && wrangler dev --config control/wrangler.jsonc --local",
+    "test:reviews": "node control/test/reviews.mjs"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "ipaddr.js": "2.5.0",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "miniflare": "4.20260730.0",
+    "playwright": "1.64.1",
+    "wrangler": "4.151.1"
+  }
+}
