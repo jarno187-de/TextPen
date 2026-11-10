@@ -18,11 +18,11 @@ test('stars-only review appears at once, review with text waits for moderation',
   const a = await send(r, { rating: 5 });
   const b = await send(r, { rating: 2, name: 'Mia', text: 'Hat beim Lernzettel gut funktioniert, nur die Ränder sind zu groß.' }, '198.51.100.1');
   assert.equal(a.status, 'published'); assert.equal(b.status, 'pending');
-  assert.deepEqual(r.list().reviews.map(x => x.rating), [5]);
+  assert.equal(r.list().count, 1); assert.deepEqual(r.list().reviews, [], 'stars-only counts but is not listed');
   r.moderate(b.id, 'published');
   const list = r.list();
   assert.equal(list.count, 2); assert.equal(list.average, 3.5); assert.deepEqual(list.distribution, [0, 1, 0, 0, 1]);
-  assert.equal(list.reviews[0].name, 'Mia'); assert.equal(list.reviews[1].name, 'Anonym');
+  assert.deepEqual(list.reviews.map(x => x.name), ['Mia']);
 });
 
 test('proof of work: forged, expired, too fast, reused and unsolved challenges fail', async () => {
@@ -74,11 +74,23 @@ test('own review: edit and delete only with its token; edited text goes back to 
 });
 
 test('owner reply is shown under the review; HTTP entry maps errors', async () => {
-  const r = book(), a = await send(r, { rating: 3 });
+  const r = book(), a = await send(r, { rating: 3, text: 'Gut, aber die Ränder sind mir zu breit.' }); r.moderate(a.id, 'published');
   r.reply(a.id, 'Danke! Die Ränder lassen sich in den Einstellungen ändern.');
   assert.equal(r.list().reviews[0].reply.text, 'Danke! Die Ränder lassen sich in den Einstellungen ändern.');
   assert.deepEqual((await r.api('GET', '/__site/reviews/nope', {}, '1.2.3.4'))[0], 404);
   const [code, body] = await r.api('POST', '/__site/reviews', { rating: 5 }, '1.2.3.4');
   assert.equal(code, 400); assert.match(body.error, /Sicherheitsprüfung/);
   assert.equal((await r.api('GET', '/__site/reviews/challenge', {}, '1.2.3.4'))[0], 200);
+});
+
+test('owner edit: fixes rating, name and text, keeps status and content rules', async () => {
+  const r = book(), a = await send(r, { rating: 2, name: 'Mia', text: 'Tolle Ap, nutze sie jeden Tag.' });
+  r.moderate(a.id, 'published');
+  await r.update(a.id, { rating: 5, name: 'Mia', text: 'Tolle App, nutze sie jeden Tag.' });
+  const [row] = r.list().reviews;
+  assert.equal(row.rating, 5); assert.equal(row.text, 'Tolle App, nutze sie jeden Tag.'); assert.equal(row.edited, false);
+  assert.equal(r.recent()[0].status, 'published');
+  assert.equal(await status(r.update(a.id, { rating: 5, text: 'mehr auf www.example.com' })), 422);
+  assert.equal(await status(r.update(a.id, { rating: 9 })), 400);
+  assert.equal(await status(r.update(999, { rating: 5 })), 404);
 });

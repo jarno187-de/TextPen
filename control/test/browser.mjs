@@ -120,6 +120,10 @@ try {
     await page.locator(`[data-view=${name}]`).click(); assert.ok((await page.locator('h1').textContent()).length);
     for (const width of [390, 1440]) { await page.setViewportSize({ width, height: 1050 }); assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${name}: overflow at ${width}`); }
   }
+  await page.locator('[data-view=reviews]').click();
+  await page.locator('[data-review-tab=stars]').click(); assert.equal(await page.locator('[data-review-tab=stars]').getAttribute('aria-selected'), 'true');
+  await page.screenshot({ path: path.join(screenshots, 'reviews-stars.png'), fullPage: true });
+  await page.locator('[data-review-tab=text]').click(); assert.equal(await page.locator('[data-review-tab=text]').getAttribute('aria-selected'), 'true');
   await page.locator('[data-view=overview]').click(); await page.setViewportSize({ width: 390, height: 844 }); await page.screenshot({ path: path.join(screenshots, 'overview-mobile.png'), fullPage: true });
   pass('All seven sections render at mobile and desktop widths without page overflow');
   await page.setViewportSize({ width: 1440, height: 1050 }); await page.locator('#logout').click(); await page.locator('#login').waitFor();

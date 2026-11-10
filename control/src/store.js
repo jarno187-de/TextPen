@@ -193,6 +193,7 @@ export class ControlStore extends DurableObject {
       case 'refresh-releases': await this.refreshReleases(); break;
       case 'review-moderate': (await this.reviewBook()).moderate(Number(data.id), data.decision); this.audit(data.decision === 'published' ? 'review-published' : 'review-rejected', 'Bewertung #' + Number(data.id)); break;
       case 'review-reply': (await this.reviewBook()).reply(Number(data.id), data.text); this.audit('review-replied', 'Bewertung #' + Number(data.id)); break;
+      case 'review-update': await (await this.reviewBook()).update(Number(data.id), data); this.audit('review-edited', 'Bewertung #' + Number(data.id)); break;
       case 'review-delete': (await this.reviewBook()).purge(Number(data.id)); this.audit('review-deleted', 'Bewertung #' + Number(data.id)); break;
       case 'release': await this.deployRelease(data.id); break;
       default: throw fail('Unbekannte Aktion.');

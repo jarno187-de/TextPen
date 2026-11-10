@@ -36,8 +36,10 @@ try {
   const action = data => request(mf, '/api/action', { cookie: auth.cookie, csrf: auth.csrf, data });
   assert.equal((await action({ action: 'review-moderate', id: mine.id, decision: 'published' })).status, 200);
   assert.equal((await action({ action: 'review-reply', id: mine.id, text: 'Danke!' })).status, 200);
+  assert.equal((await action({ action: 'review-update', id: mine.id, rating: 3, name: 'Test', text: 'Funktioniert gut für meine Lernzettel.' })).status, 200);
+  assert.equal((await action({ action: 'review-update', id: mine.id, rating: 4, name: 'Test', text: 'www.example.com' })).status, 422);
   const list = await (await site('/__site/reviews')).json();
-  assert.equal(list.count, 1); assert.equal(list.average, 4); assert.equal(list.reviews[0].reply.text, 'Danke!');
+  assert.equal(list.count, 1); assert.equal(list.average, 3); assert.equal(list.reviews[0].reply.text, 'Danke!');
   pass('Owner publishes and replies in TextPen Control');
 
   response = await site('/__site/reviews/mine', { method: 'PUT', data: { id: mine.id, token: mine.token, rating: 5, name: 'Test', text: 'Funktioniert gut für meine Lernzettel.' } });

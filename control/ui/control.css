@@ -211,6 +211,13 @@ dialog p{color:var(--muted);font-size:13px;line-height:1.65}
 .review-head strong{font-size:13px}
 .review-head small{color:var(--muted);font-size:12px}
 .review-text{margin:8px 0 12px;font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.review-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.review-tab.active{border-color:var(--lime);background:var(--panel-raised)}
+.review-edit{margin:0 0 12px;font-size:12px}
+.review-edit summary{cursor:pointer;color:var(--muted)}
+.review-edit form{margin-top:10px}
+.review-edit label{font-size:12px}
+.review-edit .form-actions{margin-top:10px}
 .review-reply label{font-size:12px}
 .review-reply textarea{min-height:60px}
 .review-reply .form-actions{margin-top:10px}

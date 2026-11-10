@@ -106,11 +106,11 @@ export class ReviewBook {
   async remove(data) { const row = await this.own(data.id, data.token); this.sql.exec('DELETE FROM reviews WHERE id=?', row.id); return { removed: true }; }
   async mine(data) { const row = await this.own(data.id, data.token); return { id: row.id, rating: row.rating, name: row.name, text: row.text, status: row.status }; }
 
-  /** Public page: average and distribution over all published reviews, newest first. */
+  /** Public page: average and distribution over all published reviews; the list shows only written ones, newest first. */
   list(before = 0) {
     const stats = this.rows("SELECT rating, COUNT(*) AS n FROM reviews WHERE status='published' GROUP BY rating");
     const distribution = [1, 2, 3, 4, 5].map(r => stats.find(s => s.rating === r)?.n || 0), count = distribution.reduce((a, b) => a + b, 0);
-    const rows = this.rows(`SELECT id,rating,name,text,created,edited,reply,replied FROM reviews WHERE status='published' ${before ? 'AND id<?' : ''} ORDER BY id DESC LIMIT ${PAGE + 1}`, ...(before ? [before] : []));
+    const rows = this.rows(`SELECT id,rating,name,text,created,edited,reply,replied FROM reviews WHERE status='published' AND text<>'' ${before ? 'AND id<?' : ''} ORDER BY id DESC LIMIT ${PAGE + 1}`, ...(before ? [before] : []));
     return {
       count, average: count ? Math.round(distribution.reduce((a, n, i) => a + n * (i + 1), 0) / count * 10) / 10 : 0, distribution,
       reviews: rows.slice(0, PAGE).map(r => ({ id: r.id, rating: r.rating, name: r.name || 'Anonym', text: r.text, date: r.created, edited: Boolean(r.edited), reply: r.reply ? { text: r.reply, date: r.replied } : null })),
@@ -130,6 +130,13 @@ export class ReviewBook {
     if (typeof text !== 'string' || text.trim().length > MAX_TEXT) throw fail('Antwort ist ungültig oder zu lang.');
     if (!this.rows('SELECT id FROM reviews WHERE id=?', id).length) throw fail('Bewertung nicht gefunden.', 404);
     this.sql.exec('UPDATE reviews SET reply=?,replied=? WHERE id=?', text.trim(), text.trim() ? new Date(now).toISOString() : '', id);
+  }
+  /** Owner correction (typo, wrong star count). Same content rules as visitors; status and the visitor's "edited" mark stay. */
+  async update(id, data) {
+    if (!this.rows('SELECT id FROM reviews WHERE id=?', id).length) throw fail('Bewertung nicht gefunden.', 404);
+    const stars = rating(data.rating), name = clean(data.name, MAX_NAME, 'Name'), text = clean(data.text, MAX_TEXT, 'Text');
+    const textHash = text.length >= 20 ? await digest(text.toLowerCase().replace(/\W+/gu, ' ')) : '';
+    this.sql.exec('UPDATE reviews SET rating=?,name=?,text=?,text_hash=? WHERE id=?', stars, name, text, textHash, id);
   }
   purge(id) { this.sql.exec('DELETE FROM reviews WHERE id=?', id); }
 

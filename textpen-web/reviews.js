@@ -78,7 +78,7 @@
   }
   function renderReviews(reviews, append) {
     if (!append) list.replaceChildren();
-    for (const r of reviews) {
+    for (const r of reviews) { // the server sends written reviews only; star-only ones count in the chart
       const head = el('div', { className: 'reviews-head' }, el('strong', { textContent: r.name }), el('span', { className: 'reviews-stars', textContent: stars(r.rating) }));
       head.lastChild.setAttribute('aria-label', r.rating + ' von 5 Sternen');
       list.append(el('li', {}, head,
